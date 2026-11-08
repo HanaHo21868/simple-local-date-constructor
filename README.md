@@ -21,3 +21,10 @@ The trade-off: there is no time component, no arithmetic on instants, and no par
 ## Edge you will hit
 
 Months are 1-12, not zero-based. `daysInMonth` and the `LocalDate` constructor both enforce this, and throw a `RangeError` for values outside that range. The constructor validates every field, including that the day actually exists in the given month (e.g. `new LocalDate(2023, 2, 29)` throws).
+
+## Performance
+
+The window keeps a bounded buffer, so `push` is constant time and memory does not
+grow with the length of the stream. `peak` and `trough` are linear in the window
+size, which is the trade that keeps `push` cheap.
+
